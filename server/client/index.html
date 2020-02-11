@@ -1,0 +1,28 @@
+<html>
+
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('');
+    socket.on('events', function (data) {
+      console.log('events', data);
+    });
+    socket.on('exception', function (data) {
+      console.error('exception', data);
+    });
+    socket.on('disconnect', function () {
+      console.log('Disconnected');
+    });
+    socket.on('echo', function (data) {
+      console.log('echo', data);
+    });
+    socket.on('connect', function () {
+      console.log('Connected');
+      socket.emit('echo', 'test');
+    });
+  </script>
+</head>
+
+<body></body>
+
+</html>

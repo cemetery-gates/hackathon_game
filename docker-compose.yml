@@ -1,0 +1,69 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    hostname: nginx
+    networks:
+      - asteroids
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+      - 8020:8020
+    links:
+      - server
+      - client
+      - view
+
+  server:
+    image: node:alpine
+    volumes:
+      - ./server:/app
+    working_dir: /app
+    container_name: server
+    hostname: server
+    networks:
+      - asteroids
+    links:
+      - mongo
+    command: npm run start
+
+  client:
+    image: node:alpine
+    volumes:
+      - ./client:/app
+    working_dir: /app
+    container_name: client
+    hostname: client
+    networks:
+      - asteroids
+    command: npm run start
+
+  view:
+    image: node:alpine
+    volumes:
+      - ./view:/app
+    working_dir: /app
+    container_name: view
+    hostname: view
+    networks:
+      - asteroids
+    command: npm run start
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    environment:
+      MONGODB_DATABASE: asterRoyle
+      MONGO_INITDB_DATABASE: asterRoyle
+    networks:
+      - asteroids
+
+networks:
+  asteroids:
+    driver: bridge

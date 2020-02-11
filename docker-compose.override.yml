@@ -1,0 +1,38 @@
+version: '3.1'
+services:
+  nginx:
+    ports:
+      - 8080:80
+
+  server:
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    environment:
+      NODE_ENV: development
+
+  client:
+    ports:
+      - 4200:4200
+    command: npm run start
+    environment:
+      NODE_ENV: development
+
+  view:
+    ports:
+      - 4300:4300
+    command: npm run start
+    environment:
+      NODE_ENV: development
+
+  mongo:
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    networks:
+      - asteroids
