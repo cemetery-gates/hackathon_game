@@ -7,7 +7,7 @@
     "init:client": "npm i --prefix client",
     "init:server": "npm i --prefix server",
     "init:view": "npm i --prefix view",
-    "init": "concurrently \"npm run init:client\" \"npm run init:server\" \"npm run init:view\"",
+    "init": "npm run init:client && npm run init:server && npm run init:view\"",
     "start": "docker-compose start",
     "up:server": "docker-compose up server",
     "up:client": "docker-compose up client",
@@ -23,7 +23,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "concurrently": "^5.1.0"
-  }
+  "dependencies": {}
 }
