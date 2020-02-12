@@ -297,6 +297,7 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
+node_modules
 server/node_modules/
 client/node_modules/
 view/node_modules/
