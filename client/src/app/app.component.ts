@@ -27,6 +27,10 @@ export class AppComponent {
     }
   }
 
+  reset() {
+    this.registerPlayer(this.player.name);
+  }
+
   buttonPress(buttonName: string) {
     console.log('press ' + buttonName);
     switch (buttonName) {

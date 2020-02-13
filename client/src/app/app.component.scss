@@ -1,24 +1,20 @@
 .container {
     display: flex;
-     flex-direction: row;
-     justify-content: center;
-     align-items: center;
-     height: 40%;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
  }
 
 .button1{
-
     display: flex;
-    justify-content: center;
-    align-items: end;
-    width: 55%;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .buttons {
     display: flex;
-    flex: 1 1 auto;
      flex-direction: row;
-     justify-content: center;
+     justify-content: space-around;
      width: 100%;
      align-items: center;
 }
