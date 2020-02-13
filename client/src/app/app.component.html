@@ -1,7 +1,4 @@
 <body>
-  <div>
-          <h1>AsterRoyale Controller</h1>
-  </div>
 <div class="container">
   <div  *ngIf="!player; else playerReady" class="playerForm" >
     <mat-form-field class="full-width">
@@ -11,11 +8,22 @@
     <button mat-fab color="primary" (click)="registerPlayer(playerName.value)"><mat-icon>thumb_up</mat-icon></button>
   </div>
   <ng-template #playerReady>
+
+  <div class="button1">
+
+    <button mat-button color="warn" (click)="reset()">Restart</button>
+  </div>
+
   <div class="buttons">
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('up')" (mouseup)="buttonRelease('up')">up</button>
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('left')" (mouseup)="buttonRelease('left')">left</button>
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('right')" (mouseup)="buttonRelease('right')">right</button>
-    <button style="margin:20px;height:150px;width:150px" mat-fab color="warn" (mousedown)="buttonPress('fire')" (mouseup)="buttonRelease('fire')">FIRE!</button>
+    <div>
+      <button style="margin:8px;height:75px;width:210px"mat-raised-button color="primary" (touchstart)="buttonPress('up')" (touchend)="buttonRelease('up')">up</button>
+      <div>
+      <button style="margin:5px;height:100px;width:100px"mat-raised-button color="primary" (touchstart)="buttonPress('left')" (touchend)="buttonRelease('left')">left</button>
+
+      <button style="margin:5px;height:100px;width:100px"mat-raised-button color="primary" (touchstart)="buttonPress('right')" (touchend)="buttonRelease('right')">right</button>
+    </div>
+    </div>
+    <button style="margin: 10px 100px 10px 100px;height:175px;width:175px;padding-top:5px" mat-fab color="warn" (touchstart)="buttonPress('fire')" (touchend)="buttonRelease('fire')" >FIRE!</button>
 
   </div>
 </ng-template>
