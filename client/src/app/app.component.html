@@ -1,19 +1,25 @@
-<body>  
-
-  <div>   
-      
+<body>
+  <div>
           <h1>AsterRoyale Controller</h1>
   </div>
 <div class="container">
-  
-  <div class="buttons">
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary">up</button>
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary">left</button>
-    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary">right</button>
-    <button style="margin:20px;height:150px;width:150px" mat-fab color="warn">FIRE!</button>
-    
+  <div  *ngIf="!player; else playerReady" class="playerForm" >
+    <mat-form-field class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput #playerName placeholder="Cool Guy">
+    </mat-form-field>
+    <button mat-fab color="primary" (click)="registerPlayer(playerName.value)"><mat-icon>thumb_up</mat-icon></button>
   </div>
- 
+  <ng-template #playerReady>
+  <div class="buttons">
+    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('up')" (mouseup)="buttonRelease('up')">up</button>
+    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('left')" (mouseup)="buttonRelease('left')">left</button>
+    <button style="margin:10px;height:150px;width:150px"mat-raised-button color="primary" (mousedown)="buttonPress('right')" (mouseup)="buttonRelease('right')">right</button>
+    <button style="margin:20px;height:150px;width:150px" mat-fab color="warn" (mousedown)="buttonPress('fire')" (mouseup)="buttonRelease('fire')">FIRE!</button>
+
+  </div>
+</ng-template>
+
 </div>
 
 </body>

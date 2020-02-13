@@ -1,4 +1,10 @@
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatIconModule } from "@angular/material/icon";
+
+import { HttpClientModule } from '@angular/common/http';
+
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
@@ -16,7 +22,11 @@ const config: SocketIoConfig = { url: "/", options: {} };
     FlexLayoutModule,
     BrowserAnimationsModule,
     SocketIoModule.forRoot(config),
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule,
+    HttpClientModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
