@@ -14,9 +14,10 @@ export default class MainScene extends Scene {
   players: Map<number, Player> = new Map();
   asteroids: Asteroid[] = [];
   bullets: Bullet[] = [];
-
+  
   constructor() {
     super({ key: 'MainScene' });
+    
   }
 
   preload() {
@@ -30,11 +31,6 @@ export default class MainScene extends Scene {
 
     this.rect = new Phaser.Geom.Rectangle(0, 0, this.cameras.main.width, this.cameras.main.height);
 
-    this.socket.on('echo', data => console.log(data));
-    this.socket.on('mob', (data: Mob) => {
-      console.log(`mobs: mob ${data.id}`);
-    });
-
     let asteroidID = 0;
     for (asteroidID = 0; asteroidID < 10; asteroidID++) {
       const p = this.asteroidStart();
@@ -44,8 +40,6 @@ export default class MainScene extends Scene {
       asteroid.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
       this.asteroids.push(asteroid);
     }
-
-    this.socket.emit('echo', 'Hello from Phaser');
 
     this.socket.on('playerJoin', (playerData: PlayerJoinData) => {
       me.playerJoin(playerData);
@@ -99,6 +93,16 @@ export default class MainScene extends Scene {
       }, 1000);
     });
 
+    this.physics.overlap(this.bullets, this.getShips(), (bullet: any, ship) => {
+      bullet.destroy();
+
+      this.players.forEach(player => {
+        if (player.ship === ship) {
+          player.destroy();
+        }
+      });
+    });
+
     Phaser.Actions.WrapInRectangle(this.asteroids, this.rect, 30);
     Phaser.Actions.WrapInRectangle(this.getShips(), this.rect, 20);
   }
@@ -128,7 +132,11 @@ export default class MainScene extends Scene {
     player.preload();
     player.create();
 
-    //player.ship.setName(playerData.name);
+    player.ship.floatName(playerData.name.toString());
+    let color = new Phaser.Display.Color().random(100);
+    player.ship.setTint(color.color);
+
+    
     const me = this;
     player.fireFunc = (x: number, y: number, dx: number, dy: number, rotation: number) => {
       me.fireBullet(x, y, dx, dy, rotation, playerData.id);

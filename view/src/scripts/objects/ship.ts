@@ -3,6 +3,8 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
   _turnValue: integer = 0;
   _thrustEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
   _fireTimer: integer = 0;
+  _text:Phaser.GameObjects.Text;
+  textPos = {x:0, y:-30};
 
   constructor(scene, x, y) {
     super(scene, x, y, 'ship');
@@ -39,6 +41,9 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.rotation += this._turnValue;
+    
+    this._text.setPosition(this.x + this.textPos.x, this.y + this.textPos.y);
+
   }
 
   destroy() {
@@ -60,6 +65,7 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
       this._thrustEmitter.remove();
     }, 500);
     super.destroy();
+    this._text.destroy();
   }
 
   get accelerate(): boolean {
@@ -106,5 +112,13 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
       this._turnValue = 0;
       this.setVelocity(0, 0);
     }
+  }
+
+  
+  floatName(name:string) {
+    this._text = this.scene.add.text(this.x + this.textPos.x, this.y + this.textPos.y, name);
+    this._text.setOrigin(0.5, 0.5);
+    
+    
   }
 }
