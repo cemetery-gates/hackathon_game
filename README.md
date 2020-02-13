@@ -1,7 +1,9 @@
 # AsterRoyale
+
 A multiplayer asteroids game where players use cell phones to each control their own ship
 
 ## How To Use
+
 ```bash
 # Clone this repository
 $ git clone --depth 1 git@github.adtran.com:Hackathon/AsterRoyale.git asterroyale
@@ -9,11 +11,11 @@ $ git clone --depth 1 git@github.adtran.com:Hackathon/AsterRoyale.git asterroyal
 # Go into the repository
 $ cd asterroyale
 
-# Install dependencies
-$ npm install
-
 # Install dependencies in the various projects
 $ npm run init
+
+# (if in windows) enable path conversion
+set COMPOSE_CONVERT_WINDOWS_PATHS=1
 
 # Start the local development server (on http://127.0.0.1:8080)
 # server is also at http://127.0.0.1:3000
@@ -33,3 +35,4 @@ $ npm run start
 
 # To clean up the docker files from your system:
 $ npm run down
+```

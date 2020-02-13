@@ -6,7 +6,11 @@ export default class PreloadScene extends Scene {
   }
 
   preload() {
-    this.load.image('phaser-logo', 'assets/img/phaser-logo.png');
+    this.load.image('asteroid', 'assets/img/a10000.png');
+    this.load.image('ship', 'assets/img/player.png');
+    this.load.image('bullet', 'assets/img/laserGreen.png');
+    this.load.image('smoke', 'assets/particles/smoke_06.png');
+    this.load.image('thrust', 'assets/particles/circle_05.png');
   }
 
   create() {
