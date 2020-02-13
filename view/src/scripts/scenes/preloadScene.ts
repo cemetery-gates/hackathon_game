@@ -10,6 +10,7 @@ export default class PreloadScene extends Scene {
     this.load.image('ship', 'assets/img/player.png');
     this.load.image('bullet', 'assets/img/laserGreen.png');
     this.load.image('smoke', 'assets/particles/smoke_06.png');
+    this.load.image('thrust', 'assets/particles/circle_05.png');
   }
 
   create() {

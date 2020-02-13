@@ -9,9 +9,7 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
     this.setScale(0.5);
   }
 
-  preload() {
-    this.scene.load.image('thrust', 'assets/particles/circle_05.png');
-  }
+  preload() {}
 
   create() {
     this.scene.add.existing(this);

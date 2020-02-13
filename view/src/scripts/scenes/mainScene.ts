@@ -5,6 +5,7 @@ import Mob from '../shared/mob';
 import Player from '../objects/player';
 import Ship from '../objects/ship';
 import Bullet from '../objects/bullet';
+import PlayerJoinData from '../shared/playerJoinData';
 
 export default class MainScene extends Scene {
   fpsText: Phaser.GameObjects.Text;
@@ -19,25 +20,15 @@ export default class MainScene extends Scene {
   }
 
   preload() {
-    const player = new Player({ scene: this, x: 640, y: 360 });
-    player.ship.setName('P1');
-    const me = this;
-    player.fireFunc = (x: number, y: number, dx: number, dy: number, rotation: number) => {
-      me.fireBullet(x, y, dx, dy, rotation);
-    };
-    player.preload();
-
-    this.players.set(0, player);
+    this.socket = io();
   }
 
   create() {
-    this.players.forEach(p => p.create());
+    const me = this;
 
     this.fpsText = new FpsText(this);
 
     this.rect = new Phaser.Geom.Rectangle(0, 0, this.cameras.main.width, this.cameras.main.height);
-
-    this.socket = io();
 
     this.socket.on('echo', data => console.log(data));
     this.socket.on('mob', (data: Mob) => {
@@ -55,6 +46,15 @@ export default class MainScene extends Scene {
     }
 
     this.socket.emit('echo', 'Hello from Phaser');
+
+    this.socket.on('playerJoin', (playerData: PlayerJoinData) => {
+      me.playerJoin(playerData);
+    });
+
+    this.socket.on('playerInput', (inputData: Mob) => {
+      const player = me.players.get(inputData.id);
+      player?.setRemoteKeys(inputData);
+    });
   }
 
   getShips(): Ship[] {
@@ -103,8 +103,9 @@ export default class MainScene extends Scene {
     Phaser.Actions.WrapInRectangle(this.getShips(), this.rect, 20);
   }
 
-  fireBullet(x: number, y: number, dx: number, dy: number, rotation: number) {
+  fireBullet(x: number, y: number, dx: number, dy: number, rotation: number, id: number) {
     let bullet = new Bullet(this, x, y);
+    bullet.id = id;
     bullet.create();
     bullet.setRotation(rotation);
     bullet.setVelocity(dx, dy);
@@ -114,5 +115,25 @@ export default class MainScene extends Scene {
       this.bullets.pop();
       bullet.destroy();
     }, 500);
+  }
+
+  playerJoin(playerData: PlayerJoinData) {
+    const midscreenX = this.cameras.main.width / 2;
+    const midscreenY = this.cameras.main.height / 2;
+    const player = new Player({
+      scene: this,
+      x: Phaser.Math.Between(midscreenX - 200, midscreenX + 200),
+      y: Phaser.Math.Between(midscreenY - 200, midscreenY + 200)
+    });
+    player.preload();
+    player.create();
+
+    //player.ship.setName(playerData.name);
+    const me = this;
+    player.fireFunc = (x: number, y: number, dx: number, dy: number, rotation: number) => {
+      me.fireBullet(x, y, dx, dy, rotation, playerData.id);
+    };
+
+    this.players.set(playerData.id, player);
   }
 }

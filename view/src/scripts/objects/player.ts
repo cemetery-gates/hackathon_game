@@ -1,4 +1,5 @@
 import Ship from './ship';
+import Mob from '../shared/mob';
 
 export default class Player {
   destroyed = false;
@@ -6,12 +7,12 @@ export default class Player {
   fireFunc: Function;
   scene: Phaser.Scene;
   ship: Ship;
-  controls: {
-    thrustKey: Phaser.Input.Keyboard.Key;
-    leftKey: Phaser.Input.Keyboard.Key;
-    rightKey: Phaser.Input.Keyboard.Key;
-    reverseKey: Phaser.Input.Keyboard.Key;
-    fireKey: Phaser.Input.Keyboard.Key;
+  controls = {
+    thrust: false,
+    left: false,
+    right: false,
+    reverse: false,
+    fire: false
   };
 
   constructor({ scene, x, y }) {
@@ -21,7 +22,6 @@ export default class Player {
   }
 
   preload() {
-    this.buildInputs();
     this.ship.preload();
   }
 
@@ -29,24 +29,31 @@ export default class Player {
     this.ship.create();
   }
 
+  setRemoteKeys(mob: Mob) {
+    this.controls.fire = mob.shoot;
+    this.controls.left = mob.turnLeft;
+    this.controls.right = mob.turnRight;
+    this.controls.thrust = mob.accelerate;
+  }
+
   update() {
     if (this.destroyed) return;
-    if (this.controls.thrustKey.isDown) {
+    if (this.controls.thrust) {
       this.ship.accelerate = true;
     } else {
       this.ship.accelerate = false;
     }
-    if (this.controls.leftKey.isDown) {
+    if (this.controls.left) {
       this.ship.startTurnLeft();
-    } else if (this.controls.rightKey.isDown) {
+    } else if (this.controls.right) {
       this.ship.startTurnRight();
-    } else if (this.controls.reverseKey.isDown) {
+    } else if (this.controls.reverse) {
       this.ship.reverse();
     } else {
       this.ship.stopTurning();
     }
 
-    if (this.controls.fireKey.isDown) {
+    if (this.controls.fire) {
       if (this.canFire) {
         this.canFire = false;
 
@@ -71,20 +78,6 @@ export default class Player {
     }
 
     this.ship.update();
-  }
-
-  buildInputs() {
-    const cursors = this.scene.input.keyboard.createCursorKeys();
-
-    const { down, left, right, up, shift, space } = cursors;
-
-    this.controls = {
-      leftKey: left as Phaser.Input.Keyboard.Key,
-      rightKey: right as Phaser.Input.Keyboard.Key,
-      thrustKey: up as Phaser.Input.Keyboard.Key,
-      reverseKey: down as Phaser.Input.Keyboard.Key,
-      fireKey: space as Phaser.Input.Keyboard.Key
-    };
   }
 
   destroy() {
