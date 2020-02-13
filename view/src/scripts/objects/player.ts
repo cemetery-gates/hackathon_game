@@ -2,6 +2,8 @@ import Ship from './ship';
 
 export default class Player {
   destroyed = false;
+  canFire: boolean = true;
+  fireFunc: Function;
   scene: Phaser.Scene;
   ship: Ship;
   controls: {
@@ -45,7 +47,27 @@ export default class Player {
     }
 
     if (this.controls.fireKey.isDown) {
-      this.ship.fire();
+      if (this.canFire) {
+        this.canFire = false;
+
+        let p = Phaser.Math.RotateAround(
+          new Phaser.Geom.Point(this.ship.x, this.ship.y - 50),
+          this.ship.x,
+          this.ship.y,
+          this.ship.rotation
+        );
+        let v = Phaser.Math.Rotate(new Phaser.Geom.Point(0, -500), this.ship.rotation);
+
+        this.fireFunc(p.x, p.y, this.ship.body.velocity.x + v.x, this.ship.body.velocity.y + v.y, this.ship.rotation);
+
+        this.scene.time.addEvent({
+          delay: 500,
+          callback: () => {
+            this.canFire = true;
+          },
+          callbackScope: this
+        });
+      }
     }
 
     this.ship.update();

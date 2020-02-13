@@ -16,4 +16,23 @@ export default class Asteroid extends Phaser.Physics.Arcade.Sprite {
   update() {
     this.setRotation(this.rotation + this.rotSpeed);
   }
+
+  explode() {
+    const emitter = this.scene.add.particles('smoke').createEmitter({
+      x: this.x,
+      y: this.y,
+      speed: { min: -500, max: 500 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.2, end: 0 },
+      blendMode: 'SCREEN',
+      active: true,
+      lifespan: 100,
+      tint: 0xcccccc
+    });
+
+    setTimeout(() => emitter.stop(), 100);
+    setTimeout(() => {
+      emitter.remove();
+    }, 200);
+  }
 }

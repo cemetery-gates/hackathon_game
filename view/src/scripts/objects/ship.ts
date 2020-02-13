@@ -11,7 +11,6 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
 
   preload() {
     this.scene.load.image('thrust', 'assets/particles/circle_05.png');
-    this.scene.load.image('playerFire', 'assets/img/laserGreen.png');
   }
 
   create() {
@@ -108,28 +107,6 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
     } else {
       this._turnValue = 0;
       this.setVelocity(0, 0);
-    }
-  }
-
-  fire() {
-    if (this._fireTimer === 0) {
-      this._fireTimer = 500;
-      this.scene.time.addEvent({
-        delay: 500,
-        callback: () => {
-          this._fireTimer = 0;
-        },
-        callbackScope: this
-      });
-      let bullet = this.scene.add.sprite(this.body.x, this.body.y, 'playerFire');
-      this.scene.physics.add.existing(bullet);
-      bullet.rotation = this.rotation;
-
-      let p = Phaser.Math.RotateAround(new Phaser.Geom.Point(this.x, this.y - 50), this.x, this.y, this.rotation);
-      bullet.setPosition(p.x, p.y);
-      let v = Phaser.Math.Rotate(new Phaser.Geom.Point(0, -500), this.rotation);
-
-      (bullet.body as Phaser.Physics.Arcade.Body).setVelocity(this.body.velocity.x + v.x, this.body.velocity.y + v.y);
     }
   }
 }
